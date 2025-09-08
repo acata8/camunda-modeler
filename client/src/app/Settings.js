@@ -32,7 +32,7 @@ import { Flags } from '../util';
  *
  * @typedef {Object} SettingsProperty
  *
- * @property {'text'| 'password' | 'boolean' | 'select' | 'radio'} type - one of the supported types
+ * @property {'text'| 'password' | 'boolean' | 'select' | 'radio' | 'array'} type - one of the supported types
  * @property {string} label - label on the settings page
  * @property {string|boolean} [default] - the default value
  * @property {Array<{label: string, value: string}>} [options] - options for select/radio type
@@ -40,6 +40,51 @@ import { Flags } from '../util';
  * @property {string} [description] - description on the settings page
  * @property {boolean} [restartRequired] - is restart required to apply the setting
  * @property {string} [documentationUrl] - link to an external documentation
+ * @property {PropertyCondition | AllMatchCondition} [condition] - conditions for when this property should be displayed
+ * @property {PropertyConstraints} [constraints] - validation constraints for the property value
+ * @property {ArrayFormConfig} [formConfig] - configuration for array type properties
+ * @property {Record<string, SettingsProperty>} [childProperties] - nested properties for array or object types
+ */
+
+/**
+ * Condition for displaying a property based on another property's value.
+ *
+ * @typedef {Object} PropertyCondition
+ * @property {string} property - name of the property to check
+ * @property {string} equals - value that the property must equal
+ */
+
+/**
+ * Multiple conditions that must all match for a property to be displayed.
+ *
+ * @typedef {Object} AllMatchCondition
+ * @property {Array<PropertyCondition>} allMatch - array of conditions that must all be true
+ */
+
+/**
+ * Validation constraints for property values.
+ *
+ * @typedef {Object} PropertyConstraints
+ * @property {string} [notEmpty] - error message if the value is empty
+ * @property {PatternConstraint} [pattern] - regex pattern validation
+ * @property {Function} [custom] - custom validation function that returns (values, context) => string|null
+ */
+
+/**
+ * Pattern constraint for regex validation.
+ *
+ * @typedef {Object} PatternConstraint
+ * @property {RegExp} value - regular expression to validate against
+ * @property {string} message - error message if validation fails
+ */
+
+/**
+ * Configuration for array type form elements.
+ *
+ * @typedef {Object} ArrayFormConfig
+ * @property {string} placeholder - placeholder text when array is empty
+ * @property {string} addLabel - label for the "add new element" button
+ * @property {Function} elementGenerator - function that returns default object for new array elements
  */
 
 /**
